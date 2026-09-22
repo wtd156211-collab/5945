@@ -1,0 +1,32 @@
+{
+  "name": "hub-8h",
+  "seed": 20260922,
+  "horizon_seconds": 28800,
+  "arrival": {
+    "process": "poisson",
+    "rate_per_hour": 900,
+    "start_seconds": 0,
+    "stop_seconds": 25200
+  },
+  "stations": [
+    {
+      "id": "unload",
+      "servers": 2,
+      "service": { "distribution": "uniform", "min_seconds": 45, "max_seconds": 150 },
+      "next": "sort"
+    },
+    {
+      "id": "sort",
+      "servers": 1,
+      "service": { "distribution": "exponential", "mean_seconds": 90 },
+      "next": "pack"
+    },
+    {
+      "id": "pack",
+      "servers": 3,
+      "service": { "distribution": "constant", "seconds": 120 },
+      "next": null
+    }
+  ],
+  "downtime": []
+}

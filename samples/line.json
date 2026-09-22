@@ -1,0 +1,55 @@
+{
+  "name": "line-24h",
+  "seed": 20260922,
+  "horizon_seconds": 86400,
+  "arrival": {
+    "process": "poisson",
+    "rate_per_hour": 2200,
+    "start_seconds": 0,
+    "stop_seconds": 82800
+  },
+  "stations": [
+    {
+      "id": "cut",
+      "servers": 2,
+      "service": { "distribution": "uniform", "min_seconds": 30, "max_seconds": 75 },
+      "next": "weld"
+    },
+    {
+      "id": "weld",
+      "servers": 2,
+      "service": { "distribution": "exponential", "mean_seconds": 55 },
+      "next": "assembly",
+      "rework": { "probability": 0.05, "target": "weld" }
+    },
+    {
+      "id": "assembly",
+      "servers": 3,
+      "service": { "distribution": "uniform", "min_seconds": 40, "max_seconds": 95 },
+      "next": "test"
+    },
+    {
+      "id": "test",
+      "servers": 1,
+      "service": { "distribution": "exponential", "mean_seconds": 70 },
+      "next": "paint",
+      "rework": { "probability": 0.12, "target": "assembly" }
+    },
+    {
+      "id": "paint",
+      "servers": 2,
+      "service": { "distribution": "uniform", "min_seconds": 60, "max_seconds": 180 },
+      "next": "pack"
+    },
+    {
+      "id": "pack",
+      "servers": 3,
+      "service": { "distribution": "constant", "seconds": 45 },
+      "next": null
+    }
+  ],
+  "downtime": [
+    { "station": "weld", "start_seconds": 28800, "duration_seconds": 1800 },
+    { "station": "test", "start_seconds": 57600, "duration_seconds": 2700 }
+  ]
+}
